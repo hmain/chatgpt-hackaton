@@ -1,0 +1,12 @@
+Flask==2.3.2
+Flask-BabelEx==0.9.4
+Flask-Login==0.6.2
+Flask-Mail==0.9.1
+Flask-Principal==0.4.0
+Flask-Security-Too==5.2.0
+Flask-SQLAlchemy==3.0.3  
+Flask-WTF==1.1.1
+SQLAlchemy==2.0.15
+openai==0.27.1
+pytz==2023.3
+email-validator==2.0.0.post2
