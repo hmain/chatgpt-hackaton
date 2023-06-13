@@ -10,4 +10,4 @@ SQLAlchemy==2.0.15
 openai==0.27.1
 pytz==2023.3
 email-validator==2.0.0.post2
-SQLAlchemy-Utils=<0.41
+SQLAlchemy-Utils==0.37.9
