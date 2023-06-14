@@ -54,19 +54,19 @@ security = Security(app, user_datastore)
 # Create an admin role and default admin user
 # @app.before_first_request
 # def create_admin_user():
-with app.app_context():
-    db.create_all()
-    admin_role = user_datastore.find_or_create_role(
-        "admin", description="Administrator"
-    )
-    admin_email = os.environ.get("ADMIN_EMAIL")
-    admin_password = os.environ.get("ADMIN_PASSWORD")
-
-    if not user_datastore.get_user(admin_email):
-        user_datastore.create_user(
-            email=admin_email, password=admin_password, roles=[admin_role]
-        )
-        db.session.commit()
+#with app.app_context():
+#    db.create_all()
+#    admin_role = user_datastore.find_or_create_role(
+#        "admin", description="Administrator"
+#    )
+#    admin_email = os.environ.get("ADMIN_EMAIL")
+#    admin_password = os.environ.get("ADMIN_PASSWORD")
+#
+#    if not user_datastore.get_user(admin_email):
+#        user_datastore.create_user(
+#            email=admin_email, password=admin_password, roles=[admin_role]
+#        )
+#        db.session.commit()
 
 # Initialize the ChatGPT API
 openai.api_key = os.environ["CHATGPT_API_KEY"]
