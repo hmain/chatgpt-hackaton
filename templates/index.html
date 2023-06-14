@@ -34,6 +34,7 @@
     <div class="container">
         <h1 class="mt-5">Sweden Hackaton Team Malmö - CVMatch</h1>
         <div id="chatbox" class="border mt-3 p-3" style="height: 300px; overflow-y: scroll;"></div>
+        <div id="timer" class="text-muted mt-2"></div>
         <form id="chatform" class="mt-3">
             <div class="mb-3">
                 <label for="message" class="form-label">CV Input:</label>
@@ -46,6 +47,26 @@
         <div id="outputbox" class="border mt-3 p-3" style="height: 300px; overflow-y: scroll; white-space: pre;"></div>
     </div>
     <script>
+        let timerInterval;
+
+        function updateTimer(startTime) {
+            const now = new Date().getTime();
+            const elapsed = now - startTime;
+            const seconds = (elapsed / 1000).toFixed(1);
+            document.getElementById('timer').textContent = 'Time elapsed: ' + seconds + ' seconds';
+        }
+
+        function startTimer() {
+            const startTime = new Date().getTime();
+            timerInterval = setInterval(function () {
+                updateTimer(startTime);
+            }, 10);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
         function toggleLoader(show) {
             const loader = document.getElementById("loader");
             loader.style.display = show ? "block" : "none";
@@ -54,8 +75,11 @@
         $("#chatform").submit(function (event) {
             event.preventDefault();
 
-            // Show the loader      
+            // Show the loader  
             toggleLoader(true);
+
+            // Start the timer  
+            startTimer();
 
             let message = $("#message").val();
             $("#chatbox").append("<p><strong>You:</strong> " + message + "</p>");
@@ -63,34 +87,41 @@
 
             $.post("/chat", { message: message })
                 .done(function (data) {
-                    // Hide the loader          
+                    // Hide the loader  
                     toggleLoader(false);
 
-                    // Set the raw HTML output in the outputbox    
+                    // Stop the timer  
+                    stopTimer();
+
+                    // Set the raw HTML output in the outputbox  
+                    $("#outputbox").text
                     $("#outputbox").text(data.response);
 
                     // Add the response to the chatbox  
                     $("#chatbox").append("<p><strong>AI Improved CV:</strong> " + data.response + "</p>");
 
-                    // Scroll to the bottom of the chatbox    
+                    // Scroll to the bottom of the chatbox  
                     $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
-                    // Hide the loader          
+                    // Hide the loader  
                     toggleLoader(false);
 
-                    // Check if the error is due to InvalidRequestError    
+                    // Stop the timer  
+                    stopTimer();
+
+                    // Check if the error is due to InvalidRequestError  
                     if (errorThrown === "InvalidRequestError") {
                         $("#chatbox").append("<p><strong>Error:</strong> The response was filtered due to the prompt triggering Azure OpenAI’s content management policy. Please modify your prompt and retry. To learn more about our content filtering policies, please read the documentation: <a href='https://go.microsoft.com/fwlink/?linkid=2198766' target='_blank'>https://go.microsoft.com/fwlink/?linkid=2198766</a></p>");
                     } else {
                         $("#chatbox").append("<p><strong>Error:</strong> An unexpected error occurred. Please try again later.</p>");
                     }
 
-                    // Scroll to the bottom of the chatbox    
+                    // Scroll to the bottom of the chatbox  
                     $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
                 });
 
-        });        
+        });  
     </script>
 </body>
 
