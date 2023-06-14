@@ -106,7 +106,7 @@ def chat():
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://raw.githubusercontent.com/hmain/chatgpt-hackaton/main/templates/output_style.css" />
+    <link rel="stylesheet" type="text/css" href="https://hmain.github.io/chatgpt-hackaton/css/style.css" />
   </head>
   <body lang="en">
     <section id="main">
