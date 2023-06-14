@@ -54,7 +54,7 @@ security = Security(app, user_datastore)
 # Create an admin role and default admin user
 # @app.before_first_request
 # def create_admin_user():
-#with app.app_context():
+# with app.app_context():
 #    db.create_all()
 #    admin_role = user_datastore.find_or_create_role(
 #        "admin", description="Administrator"
@@ -71,6 +71,7 @@ security = Security(app, user_datastore)
 # Initialize the ChatGPT API
 openai.api_key = os.environ["CHATGPT_API_KEY"]
 
+
 # Create routes for your web app
 @app.route("/")
 @login_required
@@ -83,7 +84,7 @@ def index():
 def chat():
     message = request.form["message"]
     response = openai.Completion.create(
-        engine="gpt432k-dep",
+        engine="gpt4-dep",
         prompt=message,
         max_tokens=16000,
         n=1,
@@ -92,6 +93,6 @@ def chat():
     )
     return {"response": response.choices[0].text.strip()}
 
+
 if __name__ == "__main__":
     app.run()
-
