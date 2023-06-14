@@ -42,6 +42,8 @@
             <button type="submit" class="btn btn-primary">Send</button>
         </form>
         <div id="loader" class="loader" style="display: none;"></div>
+        <h2 class="mt-5">Raw HTML Output</h2>
+        <div id="outputbox" class="border mt-3 p-3" style="height: 300px; overflow-y: scroll; white-space: pre;"></div>
     </div>
     <script>
         function toggleLoader(show) {
@@ -52,7 +54,7 @@
         $("#chatform").submit(function (event) {
             event.preventDefault();
 
-            // Show the loader  
+            // Show the loader    
             toggleLoader(true);
 
             let message = $("#message").val();
@@ -60,13 +62,20 @@
             $("#message").val("");
 
             $.post("/chat", { message: message }, function (data) {
-                // Hide the loader  
+                // Hide the loader    
                 toggleLoader(false);
 
-                $("#chatbox").append("<p><strong>GPT-3:</strong> " + data.response + "</p>");
+                // Append the output line by line to the chatbox  
+                const chatGptOutputLines = data.response.split('\n');
+                chatGptOutputLines.forEach(line => {
+                    $("#chatbox").append("<p><strong>CV output:</strong> " + line + "</p>");
+                });
+
+                // Set the raw HTML output in the outputbox  
+                $("#outputbox").text(data.response);
                 $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
             });
-        });    
+        });      
     </script>
 </body>
 

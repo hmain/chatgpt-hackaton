@@ -74,7 +74,6 @@ with app.app_context():
 
 # Initialize the ChatGPT API
 openai.api_key = os.environ["CHATGPT_API_KEY"]
-print("API Key:", os.environ["CHATGPT_API_KEY"])
 
 
 # Create routes for your web app
@@ -362,7 +361,7 @@ def chat():
         stop=None,
     )
     print("Response:", response)  # Add this line to print the response
-    return {"response": response["choices"][0]["message"]["content"].strip()}
+    return {"response": response["choices"][0]["message"]["content"]}
 
 
 if __name__ == "__main__":
