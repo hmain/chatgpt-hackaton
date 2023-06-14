@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatGPT Web App</title>
+    <title>Sweden Hackaton Team Malmö - CVMatch</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
@@ -39,7 +39,7 @@
                 <label for="message" class="form-label">CV Input:</label>
                 <textarea class="form-control" id="message" name="message" rows="10" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Send</button>
+            <button type="submit" class="btn btn-primary">Create AI improved CV</button>
         </form>
         <div id="loader" class="loader" style="display: none;"></div>
         <h2 class="mt-5">Raw HTML Output</h2>
@@ -54,28 +54,43 @@
         $("#chatform").submit(function (event) {
             event.preventDefault();
 
-            // Show the loader    
+            // Show the loader      
             toggleLoader(true);
 
             let message = $("#message").val();
             $("#chatbox").append("<p><strong>You:</strong> " + message + "</p>");
             $("#message").val("");
 
-            $.post("/chat", { message: message }, function (data) {
-                // Hide the loader    
-                toggleLoader(false);
+            $.post("/chat", { message: message })
+                .done(function (data) {
+                    // Hide the loader          
+                    toggleLoader(false);
 
-                // Append the output line by line to the chatbox  
-                const chatGptOutputLines = data.response.split('\n');
-                chatGptOutputLines.forEach(line => {
-                    $("#chatbox").append("<p><strong>CV output:</strong> " + line + "</p>");
+                    // Set the raw HTML output in the outputbox    
+                    $("#outputbox").text(data.response);
+
+                    // Add the response to the chatbox  
+                    $("#chatbox").append("<p><strong>AI Improved CV:</strong> " + data.response + "</p>");
+
+                    // Scroll to the bottom of the chatbox    
+                    $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Hide the loader          
+                    toggleLoader(false);
+
+                    // Check if the error is due to InvalidRequestError    
+                    if (errorThrown === "InvalidRequestError") {
+                        $("#chatbox").append("<p><strong>Error:</strong> The response was filtered due to the prompt triggering Azure OpenAI’s content management policy. Please modify your prompt and retry. To learn more about our content filtering policies, please read the documentation: <a href='https://go.microsoft.com/fwlink/?linkid=2198766' target='_blank'>https://go.microsoft.com/fwlink/?linkid=2198766</a></p>");
+                    } else {
+                        $("#chatbox").append("<p><strong>Error:</strong> An unexpected error occurred. Please try again later.</p>");
+                    }
+
+                    // Scroll to the bottom of the chatbox    
+                    $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
                 });
 
-                // Set the raw HTML output in the outputbox  
-                $("#outputbox").text(data.response);
-                $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
-            });
-        });      
+        });        
     </script>
 </body>
 

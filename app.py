@@ -57,8 +57,6 @@ user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
 # Create an admin role and default admin user
-# @app.before_first_request
-# def create_admin_user():
 with app.app_context():
     db.create_all()
     admin_role = user_datastore.find_or_create_role(
@@ -86,7 +84,6 @@ def index():
 @app.route("/chat", methods=["POST"])
 @login_required
 def chat():
-    # message = request.form["message"]
     cv_input = request.form["message"]
     response = openai.ChatCompletion.create(
         engine="gpt432k-dep",  # replace this value with the deployment name you chose when you deployed the associated model.
@@ -107,9 +104,9 @@ def chat():
 <html>
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="dep/normalize.css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="dep/Font-Awesome/css/font-awesome.css" />
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://raw.githubusercontent.com/hmain/chatgpt-hackaton/main/templates/output_style.css" />
   </head>
   <body lang="en">
     <section id="main">
@@ -360,7 +357,7 @@ def chat():
         presence_penalty=0,
         stop=None,
     )
-    print("Response:", response)  # Add this line to print the response
+    print("Response:", response)  # DEBUG
     return {"response": response["choices"][0]["message"]["content"]}
 
 
