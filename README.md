@@ -8,11 +8,12 @@ A python flask site which utilizes the Azure ChatGPT API.
     pip install -r requirements.txt
 
 ## Required Parameters
-SECRET_KEY=""
-SECURITY_PASSWORD_SALT=""
-ADMIN_EMAIL=""
-ADMIN_PASSWORD=""
-CHATGPT_API_KEY=""
+
+    SECRET_KEY=""
+    SECURITY_PASSWORD_SALT=""
+    ADMIN_EMAIL=""
+    ADMIN_PASSWORD=""
+    CHATGPT_API_KEY=""
 
 # Usage
 ## For Linux/macOS:
