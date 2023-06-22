@@ -94,7 +94,7 @@ def chat():
             },
             {
                 "role": "assistant",
-                "content": "I want you to create a professional CV, for a colsultant in the aviation industry, in html format and using the below input:",
+                "content": "I want you to create a professional CV in html format and using the below input:",
             },
             {"role": "assistant", "content": cv_input},
             {
